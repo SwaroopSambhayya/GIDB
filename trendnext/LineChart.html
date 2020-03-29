@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Line chart</title>
+    <style>
+        	#chart-cover{
+		position:absolute;
+		top:50%;
+		left:50%;
+		transform:translate(-50%,-50%);
+
+	}
+	#linechart{
+		border:solid;
+		border-width:0 0 2px 2px;
+		border-color:#1dd2af;
+		/*  background: -webkit-linear-gradient(top,#1dd2af,#fff);*/
+	}
+	#Overs{
+		margin-left:60px;
+	}
+	#Overs>span{
+		width: 60px;
+    	display: inline-block;
+   		color:#1dd2af;
+		font-size:16px;
+	}
+	#Overs>span:before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    position: absolute;
+    background-color: #1dd2af;
+    border-radius: 50%;
+    bottom: 20px;
+	}
+	#runs{
+		position:absolute;
+		top:0;
+		left:-30px;
+		margin-top: -2px;
+	}
+	#runs>span{
+		display:block;
+		color:#1dd2af;
+		font-size:16px;
+		height:30px;
+	}
+	#runs>span:after {
+    content: '';
+    width: 4px;
+    height: 4px;
+    position: absolute;
+    background-color: #1dd2af;
+    border-radius: 50%;
+    margin-left: 5px;
+	}
+    </style>
+</head>
+<body>
+    <div id="chart-cover">
+        <div id="runs"></div>
+        <canvas id="linechart"></canvas>
+        <div id="Overs"></div>
+
+  </div>
+  <script>
+var chart = document.getElementById("linechart").getContext("2d");
+
+chart.canvas.width = "300";
+chart.canvas.height = "150";
+
+var cw = chart.canvas.width;
+var ch = chart.canvas.height;
+
+var w = [0,cw/5,2*(cw/5),3*(cw/5)];
+
+var h = [ch,ch-ch/5,ch-2*(ch/5),ch-3*(ch/5)];
+
+var overs = [5,10,15];
+var runs = [40,75,140];
+var val = [];
+
+
+for(var i = 0;i<overs.length;i++){
+	var over = document.createElement('span');
+	var text = document.createTextNode(overs[i])
+	over.appendChild(text);
+	document.getElementById('Overs').appendChild(over);
+}
+
+for(var i = runs.length-1;i>=0;i--){
+	var run = document.createElement('span');
+	var text_value = document.createTextNode(runs[i])
+	run.appendChild(text_value);
+	document.getElementById('runs').appendChild(run);
+}
+
+var ch = document.getElementById("linechart");
+
+chart.beginPath();
+      
+//actual graph      
+for(var i =0;i<w.length;i++){
+
+	chart.moveTo(0, ch);
+	chart.strokeStyle = '#1dd2af';
+	chart.lineWidth = 2;
+	chart.lineTo(w[i], h[i]);
+	chart.stroke();
+}
+
+// vertical lines
+function gridV(){
+	
+	for(var i =1;i<w.length-1;i++){
+		chart.strokeStyle = 'rgba(29, 210, 175,0.3)';
+		chart.lineWidth = 1;
+		chart.moveTo(w[i], 0);
+		chart.lineTo(w[i], 150);
+	  }
+	      chart.stroke();
+  	  }
+
+//horizontal lines
+function gridH(){
+	
+	for(var i =1;i<h.length-1;i++){
+		chart.strokeStyle = 'rgba(29, 210, 175,0.3)';
+		chart.lineWidth = 1;
+		chart.moveTo(0,h[i]);
+		chart.lineTo(300,h[i]);
+	  }
+	      chart.stroke();
+  	  }
+
+  
+gridV();
+gridH();
+
+
+var beforex = document.querySelector('#Overs>span:before');
+
+for(var i = 1;i<w.length;i++){
+	beforex.style.marginLeft = w[i];
+}
+
+
+  </script>
+</body>
+</html>
